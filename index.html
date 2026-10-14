@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Snack Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              background: 'hsl(var(--color-background) / <alpha-value>)',
+              foreground: 'hsl(var(--color-foreground) / <alpha-value>)',
+              card: {
+                DEFAULT: 'hsl(var(--color-card) / <alpha-value>)',
+                foreground: 'hsl(var(--color-card-foreground) / <alpha-value>)',
+              },
+              primary: {
+                DEFAULT: 'hsl(var(--color-primary) / <alpha-value>)',
+                foreground: 'hsl(var(--color-primary-foreground) / <alpha-value>)',
+                dark: 'hsl(var(--color-primary-dark) / <alpha-value>)',
+              },
+              secondary: {
+                DEFAULT: 'hsl(var(--color-secondary) / <alpha-value>)',
+                foreground: 'hsl(var(--color-secondary-foreground) / <alpha-value>)',
+              },
+              muted: {
+                DEFAULT: 'hsl(var(--color-muted) / <alpha-value>)',
+                foreground: 'hsl(var(--color-muted-foreground) / <alpha-value>)',
+              },
+              accent: {
+                DEFAULT: 'hsl(var(--color-accent) / <alpha-value>)',
+                foreground: 'hsl(var(--color-accent-foreground) / <alpha-value>)',
+              },
+              destructive: {
+                DEFAULT: 'hsl(var(--color-destructive) / <alpha-value>)',
+                foreground: 'hsl(var(--color-destructive-foreground) / <alpha-value>)',
+              },
+            },
+            keyframes: {
+              'fade-in': {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              'slide-in-up': {
+                '0%': { transform: 'translateY(20px)', opacity: '0' },
+                '100%': { transform: 'translateY(0)', opacity: '1' },
+              },
+               'pulse-glow': {
+                '0%, 100%': { boxShadow: '0 0 0 0px hsl(var(--color-primary) / 0.3)' },
+                '50%': { boxShadow: '0 0 0 10px hsl(var(--color-primary) / 0)' },
+              },
+            },
+            animation: {
+              'fade-in': 'fade-in 0.5s ease-out forwards',
+              'slide-in-up': 'slide-in-up 0.5s ease-out forwards',
+              'pulse-glow': 'pulse-glow 2s infinite',
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+      :root {
+        --color-background: 0 0% 100%;
+        --color-foreground: 222.2 84% 4.9%;
+        --color-card: 0 0% 100%;
+        --color-card-foreground: 222.2 84% 4.9%;
+        --color-primary: 250 60% 55%;
+        --color-primary-foreground: 0 0% 100%;
+        --color-primary-dark: 250 70% 65%;
+        --color-secondary: 210 40% 96.1%;
+        --color-secondary-foreground: 215.4 16.3% 46.9%;
+        --color-muted: 210 40% 96.1%;
+        --color-muted-foreground: 215.4 16.3% 46.9%;
+        --color-accent: 210 40% 96.1%;
+        --color-accent-foreground: 220.9 39.3% 11%;
+        --color-destructive: 0 84.2% 60.2%;
+        --color-destructive-foreground: 210 40% 98%;
+      }
+      
+      .dark {
+        --color-background: 224 71% 4%;
+        --color-foreground: 210 40% 98%;
+        --color-card: 224 71% 4%;
+        --color-card-foreground: 210 40% 98%;
+        /* Primary remains the same for both themes but primary-dark is available */
+        --color-secondary: 217.2 32.6% 17.5%;
+        --color-secondary-foreground: 215 20.2% 65.1%;
+        --color-muted: 217.2 32.6% 17.5%;
+        --color-muted-foreground: 215 20.2% 65.1%;
+        --color-accent: 217.2 32.6% 17.5%;
+        --color-accent-foreground: 210 40% 98%;
+      }
+
+      body {
+        background-color: hsl(var(--color-background));
+        color: hsl(var(--color-foreground));
+        transition: background-color 0.5s ease, color 0.5s ease;
+        background-image: 
+            radial-gradient(circle at 100% 0%, hsl(280 40% 50% / 0.1), transparent 30%),
+            radial-gradient(circle at 0% 100%, hsl(200 50% 50% / 0.1), transparent 30%);
+      }
+      .dark body {
+         background-image: 
+            radial-gradient(circle at 100% 0%, hsl(280 80% 50% / 0.2), transparent 35%),
+            radial-gradient(circle at 0% 100%, hsl(250 90% 60% / 0.2), transparent 35%);
+      }
+      .grainy::before {
+        content: "";
+        position: fixed;
+        top: -100%;
+        left: -50%;
+        width: 200%;
+        height: 300%;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        opacity: 0.03;
+        animation: grain 8s steps(10) infinite;
+        z-index: -1;
+      }
+      .dark .grainy::before {
+        opacity: 0.05;
+      }
+       @keyframes grain {
+        0%, 100% { transform: translate(0, 0); }
+        10% { transform: translate(-5%, -10%); }
+        20% { transform: translate(-15%, 5%); }
+        30% { transform: translate(7%, -25%); }
+        40% { transform: translate(-5%, 25%); }
+        50% { transform: translate(-15%, 10%); }
+        60% { transform: translate(15%, 0%); }
+        70% { transform: translate(0%, 15%); }
+        80% { transform: translate(3%, 35%); }
+        90% { transform: translate(-10%, 10%); }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.7.1",
+    "@google/genai": "https://esm.sh/@google/genai@^1.11.0",
+    "react/": "https://esm.sh/react@^19.1.1/",
+    "react": "https://esm.sh/react@^19.1.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
+    "recharts": "https://esm.sh/recharts@^3.1.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="antialiased grainy">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

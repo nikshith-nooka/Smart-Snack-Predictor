@@ -1,0 +1,9 @@
+{
+  "name": "Smart Snack Predictor",
+  "description": "An AI-powered snack nutritionist that provides personalized, healthy snack recommendations based on your goals, cravings, and pantry items.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": []
+}
